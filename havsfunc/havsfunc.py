@@ -4,7 +4,7 @@ import math
 from functools import partial
 from typing import Any, Mapping, Optional, Sequence, Union
 
-from vsdenoise import BM3D, nl_means, prefilter_to_full_range
+from vsdenoise import BM3D, nl_means, prefilter_to_full_range, DFTTest
 from vsexprtools import complexpr_available, norm_expr
 from vsrgtools import BlurMatrix, gauss_blur, repair
 from vstools import (
@@ -1287,7 +1287,7 @@ def QTGMC(
         if Denoiser == 'bm3d':
             dnWindow = BM3D.denoise(noiseWindow, Sigma, NoiseTR, planes=CNplanes)
         elif Denoiser == 'dfttest':
-            dnWindow = noiseWindow.dfttest.DFTTest(sigma=Sigma * 4, tbsize=noiseTD, planes=CNplanes)
+            dnWindow = DFTTest.denoise(noiseWindow, sigma=Sigma * 4, tbsize=noiseTD, planes=CNplanes)
         elif Denoiser in ['knlm', 'knlmeanscl']:
             dnWindow = nl_means(noiseWindow, strength=Sigma, tr=NoiseTR, planes=CNplanes)
         else:
